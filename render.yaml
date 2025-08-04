@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: lyricsflow
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn myproject.wsgi:application"
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        sync: false
+      - key: DEBUG
+        sync: false
+      - key: SOCIAL_AUTH_GOOGLE_OAUTH2_KEY
+        sync: false
+      - key: SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET
+        sync: false
+      - key: EMAIL_HOST_USER
+        sync: false
+      - key: EMAIL_HOST_PASSWORD
+        sync: false
+      - key: GOOGLE_API_KEY
+        sync: false
+pythonVersion: 3.11.9
