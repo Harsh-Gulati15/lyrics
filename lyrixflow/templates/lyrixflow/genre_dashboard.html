@@ -1,0 +1,416 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Your Vibe - LyriXFlow</title>
+    <link rel="icon" href="{% static 'other_images/mic.png' %}" type="image/png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        :root {
+            --primary-bg: #0a0a0a;
+            --secondary-bg: #151515;
+            --card-bg: #1c1c1c;
+            --primary-text: #ffffff;
+            --secondary-text: #b0b0b0;
+            --accent-color: #667eea;
+            --glow-color: rgba(102, 126, 234, 0.4);
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        * { box-sizing: border-box; }
+        body, html {
+            margin: 0; padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--primary-bg);
+            color: var(--primary-text);
+            overflow: hidden;
+            font-weight: 400;
+        }
+        .main-container {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            height: calc(100vh - 70px); /* Account for navbar height */
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+        /* Right Panel (Genre Details) */
+        .right-content {
+            background: linear-gradient(145deg, var(--secondary-bg), var(--card-bg));
+            padding: 50px 40px;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: flex-start;
+            position: relative; overflow: hidden;
+        }
+        .right-content::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.1) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .genre-image-container {
+            position: relative; margin-bottom: 35px;
+            animation: fadeInUp 1.2s ease-out;
+        }
+        .right-content img {
+            width: 100%; max-width: 400px;
+            aspect-ratio: 1 / 1; object-fit: cover;
+            border-radius: 24px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 0 0 0 1.5px rgba(255, 255, 255, 0.08);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: brightness(0.9) contrast(1.15);
+        }
+        .right-content img:hover {
+            transform: scale(1.08) rotate(-3deg);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.9), 0 0 0 1.5px rgba(255, 255, 255, 0.12);
+            filter: brightness(1.1) contrast(1.25);
+        }
+        .right-content h1 {
+            font-size: 3.2rem; margin: 0; font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #b0b0b0);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            animation: fadeInUp 1.2s ease-out 0.2s both;
+            line-height: 1.15; letter-spacing: -0.03em;
+        }
+        .right-content h2 {
+            font-size: 1.1rem; color: var(--secondary-text);
+            margin: 15px 0 30px 0; font-weight: 500;
+            animation: fadeInUp 1.2s ease-out 0.4s both;
+            opacity: 0.85;
+        }
+        .explore-button {
+            padding: 1rem 2rem; border-radius: 50px; font-weight: 600;
+            text-decoration: none; transition: all 0.3s ease;
+            display: inline-block; background: var(--gradient-1);
+            color: white; border: none; cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: fadeInUp 1.2s ease-out 0.6s both;
+        }
+        .explore-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 40px var(--glow-color);
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Left Panel (Genre List) */
+        .left-column-wrapper {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: flex-start;
+            height: calc(100vh - 70px);
+            background: linear-gradient(145deg, var(--primary-bg), #121212);
+            position: relative;
+            padding-top: 40px;
+        }
+        .left-column-wrapper::before {
+            content: ''; position: absolute; top: 0; left: 0; bottom: 0;
+            width: 1px; background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.15), transparent);
+        }
+        .search-bar-container {
+            width: 100%; max-width: 500px;
+            padding: 0 40px; margin-bottom: 20px;
+        }
+        #genre-search {
+            width: 100%; padding: 14px 20px; border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--card-bg); color: var(--primary-text);
+            font-size: 1rem; transition: all 0.3s ease;
+            outline: none;
+        }
+        #genre-search:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px var(--glow-color);
+        }
+        .genre-list {
+            width: 100%; max-width: 500px;
+            overflow-y: auto; scroll-snap-type: y mandatory;
+            scrollbar-width: none; position: relative;
+            padding: 0 40px;
+        }
+        .genre-list::-webkit-scrollbar { display: none; }
+        .genre-block {
+            display: flex; align-items: center;
+            padding: 24px 30px;
+            margin: 0 0 16px 0;
+            border-radius: 20px;
+            cursor: pointer;
+            scroll-snap-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: scale(0.92); opacity: 0.5;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .genre-block.active {
+            transform: scale(1); opacity: 1;
+            background: linear-gradient(135deg, var(--accent-color), rgba(118, 75, 162, 0.2));
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(102, 126, 234, 0.3);
+            border: 1px solid rgba(102, 126, 234, 0.4);
+        }
+        .genre-block.active .item-info h3 {
+            color: var(--primary-text);
+            text-shadow: 0 0 15px var(--glow-color);
+        }
+        .genre-block img {
+            width: 90px; height: 90px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-right: 24px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+        .genre-block:hover img {
+            transform: scale(1.12) rotate(6deg);
+        }
+        .item-info { flex: 1; overflow: hidden; }
+        .item-info h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.4rem;
+            color: var(--primary-text);
+            transition: all 0.3s ease; font-weight: 600;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .item-info p {
+            margin: 0;
+            font-size: 1rem;
+            color: var(--secondary-text);
+            opacity: 0.85;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        /* Navbar styles */
+        .lyrixflow-nav {
+            height: 70px; display: flex;
+            justify-content: space-between; align-items: center;
+            padding: 0 2rem; background: var(--secondary-bg);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative; z-index: 100;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: 55% 1fr;
+                height: calc(100vh - 60px);
+            }
+            .lyrixflow-nav { height: 60px; }
+            .right-content { padding: 30px 20px; text-align: center; align-items: center; }
+            .right-content h1 { font-size: 2.2rem; }
+            .left-column-wrapper { height: auto; padding-top: 20px; }
+            .genre-list, .search-bar-container { max-width: 100%; padding: 0 20px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="lyrixflow-nav">
+        <div class="flex items-center">
+            <a href="{% url 'index' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                <span style="font-size: 2rem; margin-right: 0.5rem;">🎤</span>
+                <span style="font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; background: var(--gradient-1); -webkit-background-clip: text; color: transparent;">
+                    LyriXFlow
+                </span>
+            </a>
+        </div>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <span style="font-size: 0.9rem; color: var(--secondary-text);">Welcome, {{ request.user.username }}!</span>
+            <form method="post" action="{% url 'logout' %}" style="margin: 0;">
+                {% csrf_token %}
+                <button type="submit" style="background: var(--accent-color); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 50px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                    Logout
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <!-- Left column: Scrollable Genre List -->
+        <div class="left-column-wrapper">
+            <!-- Search Bar -->
+            <div class="search-bar-container">
+                <input type="text" id="genre-search" placeholder="Search genres ...">
+            </div>
+            <!-- Genre List -->
+            <div id="genre-list" class="genre-list">
+                <!-- Genre blocks will be dynamically inserted here by JS -->
+            </div>
+        </div>
+
+        <!-- Right column: Genre Details -->
+        <div id="right-content" class="right-content">
+            <div class="genre-image-container">
+                <img id="display-image" src="data:," alt="Genre Art">
+            </div>
+            <h1 id="display-title">Select a Genre</h1>
+            <h2 id="display-artists"></h2>
+            <a href="#" id="explore-button" class="explore-button" style="display: none;">
+                Explore Artists →
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const genreData = {{ genres_json|safe }};
+
+        // DOM Elements
+        const displayImage = document.getElementById('display-image');
+        const displayTitle = document.getElementById('display-title');
+        const displayArtists = document.getElementById('display-artists');
+        const exploreButton = document.getElementById('explore-button');
+        const genreListContainer = document.getElementById('genre-list');
+        const searchInput = document.getElementById('genre-search');
+        
+        let genreBlocks = [];
+        let scrollTimeout;
+        let currentGenreIndex = 0;
+
+        function populateGenreList() {
+            genreListContainer.innerHTML = genreData.map((genre, index) => `
+                <div class="genre-block" data-index="${index}">
+                    <img src="${genre.image_url}" alt="${genre.name}">
+                    <div class="item-info">
+                        <h3>${genre.name}</h3>
+                        <p>${genre.description}</p>
+                    </div>
+                </div>`
+            ).join('');
+            genreBlocks = Array.from(genreListContainer.getElementsByClassName('genre-block'));
+        }
+
+        function setupScrollContainer() {
+            if (genreBlocks.length === 0) return;
+            const firstBlock = genreBlocks[0];
+            const style = window.getComputedStyle(firstBlock);
+            const marginBottom = parseFloat(style.marginBottom);
+            const blockHeight = firstBlock.offsetHeight;
+            const singleItemTotalHeight = blockHeight + marginBottom;
+            const containerHeight = singleItemTotalHeight * 4.5;
+            genreListContainer.style.height = `${containerHeight}px`;
+            const verticalPadding = (containerHeight / 2) - (blockHeight / 2);
+            genreListContainer.style.paddingTop = `${verticalPadding}px`;
+            genreListContainer.style.paddingBottom = `${verticalPadding}px`;
+        }
+
+        function updateRightPanel(genre) {
+            if (!genre) {
+                displayTitle.textContent = 'No results found';
+                displayArtists.textContent = 'Try a different search term.';
+                displayImage.src = 'data:,';
+                exploreButton.style.display = 'none';
+                return;
+            };
+            
+            const elements = [displayImage, displayTitle, displayArtists, exploreButton];
+            elements.forEach((el, index) => {
+                el.style.animation = 'none';
+                el.offsetHeight; // Trigger reflow
+                el.style.animation = `fadeInUp 0.7s ease-out ${index * 0.15}s both`;
+            });
+
+            displayImage.src = genre.image_url;
+            displayTitle.textContent = genre.name;
+            displayArtists.innerHTML = `Featuring: <span style="color: var(--accent-secondary);">${genre.sample_artists.join(', ')}</span>`;
+            exploreButton.href = genre.url;
+            exploreButton.style.display = 'inline-block';
+        }
+
+        function selectGenre(index) {
+            if (index < 0 || index >= genreBlocks.length) return;
+            currentGenreIndex = index;
+            genreBlocks.forEach(block => block.classList.remove('active'));
+            genreBlocks[currentGenreIndex].classList.add('active');
+            genreBlocks[currentGenreIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            updateRightPanel(genreData[currentGenreIndex]);
+        }
+        
+        // Event listeners
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            let firstVisibleIndex = -1;
+
+            genreBlocks.forEach((block, index) => {
+                const genreName = genreData[index].name.toLowerCase();
+                const sampleArtists = genreData[index].sample_artists.join(' ').toLowerCase();
+
+                if (genreName.includes(searchTerm) || sampleArtists.includes(searchTerm)) {
+                    block.style.display = 'flex';
+                    if (firstVisibleIndex === -1) {
+                        firstVisibleIndex = index;
+                    }
+                } else {
+                    block.style.display = 'none';
+                }
+            });
+
+            // Update selection based on search results
+            if (firstVisibleIndex !== -1) {
+                selectGenre(firstVisibleIndex);
+            } else {
+                updateRightPanel(null); // No results found
+            }
+        });
+
+        genreListContainer.addEventListener('scroll', () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                const scrollContainerRect = genreListContainer.getBoundingClientRect();
+                const containerCenterY = scrollContainerRect.top + scrollContainerRect.height / 2;
+                let closestBlock = null;
+                let smallestDistance = Infinity;
+
+                genreBlocks.forEach(block => {
+                    if (block.style.display === 'none') return; // Skip hidden blocks
+                    const blockRect = block.getBoundingClientRect();
+                    const blockCenterY = blockRect.top + blockRect.height / 2;
+                    const distance = Math.abs(containerCenterY - blockCenterY);
+                    if (distance < smallestDistance) {
+                        smallestDistance = distance;
+                        closestBlock = block;
+                    }
+                });
+
+                if (closestBlock && !closestBlock.classList.contains('active')) {
+                    const newIndex = parseInt(closestBlock.dataset.index);
+                    selectGenre(newIndex);
+                }
+            }, 100);
+        });
+
+        genreListContainer.addEventListener('click', (event) => {
+            const clickedBlock = event.target.closest('.genre-block');
+            if (clickedBlock) {
+                const newIndex = parseInt(clickedBlock.dataset.index);
+                selectGenre(newIndex);
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            const visibleBlocks = genreBlocks.filter(b => b.style.display !== 'none');
+            if (visibleBlocks.length === 0) return;
+
+            const currentVisibleIndex = visibleBlocks.indexOf(genreBlocks[currentGenreIndex]);
+
+            if (e.key === 'ArrowUp') {
+                const nextVisibleIndex = (currentVisibleIndex - 1 + visibleBlocks.length) % visibleBlocks.length;
+                const newIndex = parseInt(visibleBlocks[nextVisibleIndex].dataset.index);
+                selectGenre(newIndex);
+            } else if (e.key === 'ArrowDown') {
+                 const nextVisibleIndex = (currentVisibleIndex + 1) % visibleBlocks.length;
+                 const newIndex = parseInt(visibleBlocks[nextVisibleIndex].dataset.index);
+                 selectGenre(newIndex);
+            } else if (e.key === 'Enter') {
+                if (exploreButton.href && exploreButton.style.display !== 'none') {
+                    window.location.href = exploreButton.href;
+                }
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateGenreList();
+            setupScrollContainer();
+            if (genreBlocks.length > 0) {
+                setTimeout(() => selectGenre(0), 200);
+            }
+        });
+    </script>
+</body>
+</html>

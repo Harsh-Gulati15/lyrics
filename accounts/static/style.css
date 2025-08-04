@@ -1,0 +1,339 @@
+body {
+    margin: 0;
+    font-family: 'Urbanist', sans-serif;
+    background: #0d0d0d;
+    color: #fff;
+    scroll-behavior: smooth;
+  }
+  
+  .navbar {
+    background: #121212;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #ff007f;
+  }
+  
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: #ff007f;
+    letter-spacing: 1px;
+  }
+  
+  .auth-buttons {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .auth-buttons .btn {
+    text-decoration: none;
+    background: #ff007f;
+    color: #fff;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+  }
+  
+  .auth-buttons .btn:hover {
+    background: #e60073;
+  }
+  
+  .section {
+    padding: 5rem 2rem;
+    text-align: center;
+  }
+  
+  .hero {
+    position: relative;
+    background: url('https://images.unsplash.com/photo-1598387845624-098981e4214d?auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+  }
+  
+  .hero .overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+  }
+  
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+  }
+  
+  .hero h1 {
+    font-size: 4rem;
+    font-family: 'Bebas Neue', cursive;
+    color: #ff007f;
+  }
+  
+  .hero p {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+  }
+  
+  .hero button {
+    background: #ff007f;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+  }
+  
+  .hero button:hover {
+    background: #e60073;
+  }
+  
+  .about {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    background-color: #1a1a1a;
+    text-align: left;
+  }
+  
+  .about img {
+    width: 300px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255, 0, 127, 0.3);
+  }
+  
+  .about .text {
+    max-width: 500px;
+  }
+  
+  .about h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    color: #ff007f;
+    font-size: 2.5rem;
+  }
+  
+  .support, .connect {
+    background-color: #111;
+  }
+  
+  .support h2, .connect h2 {
+    color: #ff007f;
+    font-size: 2rem;
+    font-family: 'Bebas Neue', sans-serif;
+  }
+  
+  .socials a {
+    margin: 0 1rem;
+    color: #ff007f;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .socials a:hover {
+    text-decoration: underline;
+  }
+  
+  footer {
+    background: #1a1a1a;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #aaa;
+  }
+  
+  /* Reusing the existing styles from index.html */
+
+/* Add the styles for the signup page */
+.signup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #0d0d0d;
+  }
+  
+  .signup-form {
+    background: #121212;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(255, 0, 127, 0.3);
+  }
+  
+  .signup h2 {
+    color: #ff007f;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .input-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+  }
+  
+  .input-group label {
+    font-weight: bold;
+    color: #fff;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 0.3rem;
+    border: 1px solid #ff007f;
+    border-radius: 8px;
+    color: #fff;
+    background-color: #2a2a2a;
+  }
+  
+  .btn {
+    background: #ff007f;
+    color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background 0.3s;
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    background: #e60073;
+  }
+  
+  .divider {
+    margin: 2rem 0;
+  }
+  
+  .divider span {
+    color: #ff007f;
+    font-weight: bold;
+  }
+  
+  .google-btn {
+    background: #4285F4;
+    color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-weight: bold;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .google-btn:hover {
+    background: #357ae8;
+  }
+  
+  .google-icon {
+    width: 24px;
+    height: 24px;
+  }
+  
+/* Reusing the existing styles from the signup page */
+
+/* Add styles for the login page */
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #0d0d0d;
+  }
+  
+  .login-form {
+    background: #121212;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(255, 0, 127, 0.3);
+  }
+  
+  .login h2 {
+    color: #ff007f;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .input-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+  }
+  
+  .input-group label {
+    font-weight: bold;
+    color: #fff;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 0.3rem;
+    border: 1px solid #ff007f;
+    border-radius: 8px;
+    color: #fff;
+    background-color: #2a2a2a;
+  }
+  
+  .btn {
+    background: #ff007f;
+    color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background 0.3s;
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    background: #e60073;
+  }
+  
+  .divider {
+    margin: 2rem 0;
+  }
+  
+  .divider span {
+    color: #ff007f;
+    font-weight: bold;
+  }
+  
+  .google-btn {
+    background: #4285F4;
+    color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-weight: bold;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .google-btn:hover {
+    background: #357ae8;
+  }
+  
+  .google-icon {
+    width: 24px;
+    height: 24px;
+  }
+  

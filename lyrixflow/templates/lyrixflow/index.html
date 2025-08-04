@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+
+<head>
+  <link rel="icon" href="{% static 'other_images/mic.png' %}" type="image/png">
+
+  <script>
+    // Apply saved theme before page loads (avoids flickering)
+    (function () {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LyriXFlow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Urbanist:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #8a2be2;
+      --secondary: #ff6b6b;
+      --text: #333;
+      --bg: #f8f9fa;
+      --card-bg: #ffffff;
+      --nav-bg: rgba(255, 255, 255, 0.9);
+      --hero-overlay: rgba(0, 0, 0, 0.5);
+    }
+
+    .dark {
+      --primary: #9c27b0;
+      --secondary: #ff5252;
+      --text: #f1f1f1;
+      --bg: #121212;
+      --card-bg: #1e1e1e;
+      --nav-bg: rgba(30, 30, 30, 0.9);
+      --hero-overlay: rgba(0, 0, 0, 0.7);
+    }
+
+    body {
+      font-family: 'Urbanist', sans-serif;
+      color: var(--text);
+      background-color: var(--bg);
+      transition: all 0.3s ease;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 1px;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: var(--nav-bg);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 0.6rem 1.2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #7b1fa2;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-outline {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .section {
+      padding: 6rem 2rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero {
+      position: relative;
+      background: url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+      color: white;
+      text-align: center;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--hero-overlay);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero p {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .about img {
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .about .text {
+      padding: 2rem;
+    }
+
+    .about h2 {
+      font-size: 3rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .about p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+    }
+
+    .support, .connect {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .support h2, .connect h2 {
+      font-size: 3rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .support p {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .socials a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+    }
+
+    .socials a:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background-color: var(--card-bg);
+    }
+
+    /* Theme Toggle Styles (from previous implementation) */
+    .theme-toggle {
+      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      background: linear-gradient(135deg, var(--primary) 60%, #a084ee 100%);
+      color: white !important;
+      width: 2.8rem;
+      height: 2.8rem;
+      border: none;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
+      cursor: pointer;
+      font-size: 1.4rem;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+    }
+
+    .theme-icon {
+      transition: all 0.5s ease;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+      pointer-events: none;
+    }
+    .theme-icon.active {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1) rotate(0deg);
+      pointer-events: all;
+      position: absolute;
+    }
+    .theme-icon.inactive {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.5) rotate(-90deg);
+      pointer-events: none;
+      position: absolute;
+    }
+
+    @media (max-width: 768px) {
+      .about {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+      }
+
+      .navbar {
+        padding: 1rem;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body class="light">
+  <nav class="navbar">
+    <div class="logo">🎤 LyriXFlow</div>
+    <div class="auth-buttons">
+      {% if user.is_authenticated %}
+        <!-- Show this if the user IS logged in -->
+        <span class="text-sm text-gray-800 dark:text-gray-200 hidden sm:inline">Welcome, {{ user.username }}!</span>
+        <a href="{% url 'dashboard' %}" class="btn btn-primary">Go to Dashboard</a>
+        <form method="post" action="{% url 'logout' %}" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline">Logout</button>
+        </form>
+      {% else %}
+      <a href="{% url 'signup' %}" class="btn btn-outline">Sign Up</a>
+      <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+            {% endif %}
+
+      <!-- Theme Toggle Start -->
+      <button id="theme-toggle" class="theme-toggle relative" aria-label="Switch theme">
+        <!-- Moon Icon -->
+        <svg id="moon-icon" class="theme-icon" width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <path
+            fill="currentColor"
+            d="M21.49 15.39A9 9 0 0 1 8.61 2.51a1 1 0 0 0-1.15 1.29A7 7 0 0 0 13 21a7 7 0 0 0 6.2-5.54 1 1 0 0 0 1.29-1.15Z"
+          />
+        </svg>
+        <!-- Sun Icon -->
+        <svg id="sun-icon" class="theme-icon" width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="5" fill="currentColor"/>
+          <g stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </g>
+        </svg>
+      </button>
+      <!-- Theme Toggle End -->
+    </div>
+  </nav>
+  <section id="home" class="section hero">
+    <div class="overlay"></div>
+    <div class="hero-content">
+      <h1>Drop Your Rhymes. Let AI Flow.</h1>
+      <p>Turn your thoughts into lyrical fire. AI-powered and vibe-approved.</p>
+      <a href="{% url 'login' %}" class="btn btn-primary" style="font-size: 1.2rem; padding: 0.8rem 2rem;">Get Started</a>
+    </div>
+  </section>
+  <section id="about" class="section about">
+    <img src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=900&q=80" alt="rapper art">
+    <div class="text">
+      <h2>What is LyriXFlow?</h2>
+      <p>LyriXFlow is where creativity meets code. Whether you're a freestyle wizard or just vibin', our AI helps you cook up bars with soul and swagger.</p>
+    </div>
+  </section>
+  <section id="support" class="section support">
+    <h2>Need Help?</h2>
+    <p>Stuck with a rhyme or need tech help? Hit us up, and we got you.</p>
+    <p>Email: support@lyrixflow.com</p>
+  </section>
+  <section id="connect" class="section connect">
+    <h2>Connect With Us</h2>
+    <p>Let's vibe on the socials 🔊</p>
+    <div class="socials">
+      <a href="#">Instagram</a>
+      <a href="#">Twitter/X</a>
+      <a href="#">YouTube</a>
+    </div>
+  </section>
+  <footer>
+    <p>© 2025 LyriXFlow. All rights reserved.</p>
+  </footer>
+
+  <!-- Theme Toggle Script -->
+  <script>
+    // Theme Toggle Logic
+    const toggleBtn = document.getElementById("theme-toggle");
+    const moonIcon = document.getElementById("moon-icon");
+    const sunIcon = document.getElementById("sun-icon");
+    const html = document.documentElement;
+    const theme = localStorage.getItem("theme");
+
+    function setIcons() {
+      if (html.classList.contains("dark")) {
+        moonIcon.classList.add("inactive");
+        moonIcon.classList.remove("active");
+        sunIcon.classList.add("active");
+        sunIcon.classList.remove("inactive");
+      } else {
+        moonIcon.classList.add("active");
+        moonIcon.classList.remove("inactive");
+        sunIcon.classList.add("inactive");
+        sunIcon.classList.remove("active");
+      }
+    }
+
+    // Initialize icons on load
+    if (theme === "dark" || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      html.classList.add("dark");
+      moonIcon.classList.add("inactive");
+      moonIcon.classList.remove("active");
+      sunIcon.classList.add("active");
+      sunIcon.classList.remove("inactive");
+    } else {
+      moonIcon.classList.add("active");
+      moonIcon.classList.remove("inactive");
+      sunIcon.classList.add("inactive");
+      sunIcon.classList.remove("active");
+    }
+
+    toggleBtn.addEventListener("click", () => {
+      html.classList.toggle("dark");
+      if (html.classList.contains("dark")) {
+        localStorage.setItem("theme", "dark");
+      } else {
+        localStorage.setItem("theme", "light");
+      }
+      setIcons();
+    });
+  </script>
+
+</body>
+</html>

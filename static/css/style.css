@@ -1,0 +1,460 @@
+:root {
+  --primary: #8a2be2; /* Vibrant Purple */
+  --primary-darker: #7b1fa2; /* For hover states */
+  --secondary: #ff6b6b; /* Energetic Coral */
+  --text: #333;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --nav-bg: rgba(255, 255, 255, 0.85); /* Slightly less opaque for better blur */
+  --hero-overlay: rgba(0, 0, 0, 0.55);
+  --text-muted: #6c757d;
+  --border-color: rgba(0,0,0,0.1);
+}
+
+.dark {
+  --primary: #9c27b0; /* Deep Purple for dark mode */
+  --primary-darker: #891aa0;
+  --secondary: #ff5252; /* Vivid Red for dark mode */
+  --text: #f1f1f1;
+  --bg: #121212; /* True black for deep contrast */
+  --card-bg: #1e1e1e; /* Dark grey for cards */
+  --nav-bg: rgba(26, 26, 26, 0.85); /* Dark, slightly transparent nav */
+  --hero-overlay: rgba(0, 0, 0, 0.7);
+  --text-muted: #adb5bd;
+  --border-color: rgba(255,255,255,0.1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Urbanist', sans-serif;
+  color: var(--text);
+  background-color: var(--bg);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  opacity: 0;
+  animation: fadeInPage 0.6s ease-out forwards;
+  animation-delay: 0.1s; /* Short delay for elements to be ready */
+}
+
+@keyframes fadeInPage {
+  to {
+    opacity: 1;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 1.5px; /* Slightly increased for impact */
+  font-weight: 400; /* Bebas Neue is often bold by default */
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 2rem; /* Increased padding */
+  background-color: var(--nav-bg);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(12px); /* Stronger blur */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: padding 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navbar.scrolled {
+  padding: 0.8rem 2rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.2rem; /* Slightly larger */
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem; /* Increased gap */
+  transition: color 0.3s ease;
+  text-decoration: none; /* Ensure logo link has no underline */
+}
+.logo svg {
+  transition: transform 0.3s ease;
+}
+.logo:hover svg {
+    transform: rotate(-15deg) scale(1.1);
+}
+
+
+.auth-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.btn {
+  padding: 0.7rem 1.5rem; /* Slightly larger buttons */
+  border-radius: 50px;
+  font-weight: 600; /* Urbanist bold */
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transition */
+  display: inline-block;
+  border: 2px solid transparent; /* Prepare for outline */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.btn:active {
+  transform: translateY(1px) scale(0.97);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-darker);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(var(--primary), 0.3); /* Need to define var(--primary-rgb) or use hex directly for alpha */
+}
+
+.btn-outline {
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  background-color: transparent;
+}
+
+.btn-outline:hover {
+  background-color: var(--primary);
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(var(--primary), 0.2); /* Same here */
+}
+
+/* Note for box-shadow with CSS variables:
+   rgba(var(--primary), 0.3) won't work directly because --primary is a hex string.
+   You'd need to define --primary-rgb: 138, 43, 226; and then use rgba(var(--primary-rgb), 0.3).
+   Alternatively, for simplicity here, I'll use a slightly less dynamic approach or you can add the -rgb variables.
+   Let's adjust hover box-shadows:
+*/
+.btn-primary:hover {
+  background-color: var(--primary-darker);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px #8a2be24d; /* 30% opacity of --primary */
+}
+.btn-outline:hover {
+  background-color: var(--primary);
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px #8a2be233; /* 20% opacity of --primary */
+}
+
+
+.section {
+  padding: 8rem 2rem 6rem; /* More top padding due to fixed nav */
+  min-height: 100vh; /* Can be adjusted if not every section needs to be full height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-x: hidden; /* Prevent horizontal scroll from animations */
+}
+
+.hero {
+  position: relative;
+  background: url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
+  /* background-attachment: fixed; /* Simple parallax, test performance/mobile */
+  color: white;
+  text-align: center;
+  min-height: 100vh; /* Ensure hero is full height */
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--hero-overlay);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-content h1, .hero-content p, .hero-content .btn-primary {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+.hero h1 {
+  font-size: clamp(2.5rem, 6vw, 4.5rem); /* Responsive font size */
+  margin-bottom: 1.5rem;
+  text-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
+  animation-delay: 0.2s;
+}
+
+.hero p {
+  font-size: clamp(1.1rem, 3vw, 1.6rem); /* Responsive font size */
+  margin-bottom: 2.5rem;
+  font-weight: 400; /* Regular Urbanist for hero subtitle */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  animation-delay: 0.4s;
+}
+
+.hero .btn-primary {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  padding: 0.8rem 2.5rem; /* Larger hero button */
+  animation-delay: 0.6s;
+  animation: fadeInUp 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards 0.6s,
+             pulseGlow 2.5s infinite ease-in-out 1.5s; /* Delay pulseGlow start */
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 5px var(--primary), 0 0 10px var(--primary), 0 6px 12px #8a2be24d;
+    transform: scale(1) translateY(-3px); /* Match hover state */
+  }
+  50% {
+    box-shadow: 0 0 15px var(--primary), 0 0 25px var(--primary), 0 8px 18px #8a2be266;
+    transform: scale(1.03) translateY(-3px);
+  }
+}
+
+.about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem; /* Increased gap */
+  align-items: center;
+}
+
+.about img {
+  width: 100%;
+  max-width: 500px; /* Max width for image */
+  justify-self: center; /* Center image in its column */
+  border-radius: 12px; /* Softer radius */
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.about img:hover {
+  transform: scale(1.05) rotate(-2deg); /* Slight rotation on hover */
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.about .text-content { /* Renamed for clarity, apply to div holding h2 and p */
+  padding: 1rem;
+}
+
+.about h2 {
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+}
+
+.about p {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  line-height: 1.8;
+}
+
+.support, .connect {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.support h2, .connect h2 {
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+}
+
+.support p {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  margin-bottom: 0.5rem;
+}
+.support p:last-of-type {
+  margin-bottom: 2rem; /* More space after last paragraph */
+}
+.support p a { /* Style for the mailto link */
+    color: var(--primary);
+    text-decoration: underline;
+    font-weight: 600;
+}
+.support p a:hover {
+    color: var(--primary-darker);
+}
+
+
+.socials {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem; /* Adjusted gap */
+  margin-top: 2.5rem;
+}
+
+.socials a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  padding: 0.8rem; /* Make it more of a button */
+  border-radius: 50%; /* Circular social icons */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 2px solid transparent;
+}
+.socials a svg {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
+  transition: transform 0.3s ease;
+}
+.socials a:hover {
+  background-color: var(--primary);
+  color: white; /* SVG color will inherit this */
+  transform: translateY(-3px) scale(1.1);
+  box-shadow: 0 4px 10px #8a2be24d;
+}
+
+footer {
+  text-align: center;
+  padding: 2.5rem 2rem;
+  background-color: var(--card-bg); /* Use card-bg for consistency */
+  border-top: 1px solid var(--border-color);
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+/* Theme Toggle Styles */
+.theme-toggle {
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: white !important;
+  width: 3rem; /* Slightly larger */
+  height: 3rem;
+  border: none;
+  border-radius: 50%; /* Circle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 0 10px #8a2be233;
+  cursor: pointer;
+  font-size: 1.5rem; /* Larger icon */
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: 0 0 18px #8a2be266;
+}
+
+.theme-icon {
+  transition: all 0.4s ease-in-out; /* Smoother, slightly faster */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  opacity: 1;
+  pointer-events: none; /* Critical for stacking icons */
+}
+.theme-icon.active {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1) rotate(0deg);
+}
+.theme-icon.inactive {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5) rotate(-90deg);
+}
+
+/* Scroll Animation Base Styles */
+.animate-on-scroll .animated-item {
+  opacity: 0;
+  transform: translateY(40px); /* Start further down */
+  transition: opacity 0.7s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition-delay: var(--animation-delay, 0s); /* Use CSS variable for delay */
+}
+.animate-on-scroll .animated-item.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem;
+  }
+  .navbar.scrolled {
+    padding: 0.6rem 1rem;
+  }
+  .logo {
+    font-size: 1.8rem; /* Adjusted for mobile */
+  }
+  .logo svg {
+    width: 24px; height: 24px;
+  }
+
+  /* Example: Hide Sign Up on very small screens if needed, or adjust gap more */
+  /* .auth-buttons .btn-outline { display: none; } */
+  .auth-buttons {
+    gap: 0.5rem;
+  }
+  .btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+   .theme-toggle {
+    width: 2.6rem; height: 2.6rem; font-size: 1.3rem;
+  }
+
+
+  .section {
+    padding: 6rem 1rem 4rem;
+  }
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  .hero p {
+    font-size: 1.1rem;
+  }
+  .hero .btn-primary {
+    font-size: 1rem; padding: 0.7rem 1.8rem;
+  }
+
+  .about {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .about img {
+    max-width: 80%; /* Smaller image on mobile */
+    margin-bottom: 1rem;
+  }
+  .about h2, .support h2, .connect h2 {
+    font-size: 2.2rem;
+  }
+  .about p, .support p {
+    font-size: 1rem;
+  }
+  .socials {
+    gap: 1rem;
+  }
+  .socials a svg {
+    width: 24px; height: 24px;
+  }
+}
